@@ -160,6 +160,10 @@ def t_LINE_COMENT(t):
   r'//.*'
   t.lexer.skip(1)
 
+def t_BLOCK_COMENT(t):
+  r'\/\*(\*(?!\/)|[^*])*\*\/'
+  t.lexer.skip(1)
+
 t_ignore = ' \t'
 
 def t_error(t):
@@ -212,6 +216,13 @@ while
 // outro comentário
 else // Esse é um comentário depois de uma palavra reservada
 else //Esse é um comentário 328472 depois de uma palavra reservada sem o espaço e com numeros
+
+/* Isso é um comentário de bloco */
+
+/* 
+ * Isso também é um comentário de bloco
+ * mas é um comentário com mais de uma linha
+ */
 ''')
 for tok in lexer:
   print(tok.type, tok.value, tok.lineno, tok.lexpos)
