@@ -42,7 +42,6 @@ reservadas = {
   'while' : 'WHILE'
 }
 
-
 tokens = [ 
   'PLUS',
   'MINUS',
@@ -89,7 +88,9 @@ tokens = [
   'POUND',
   'DOLLAR',
   'QUESTION',
-  'TILDE'
+  'TILDE',
+  'IDENT',
+  'DEDENT'
 ] + list(reservadas.values())
 
 t_PLUS = r'\+'
@@ -139,8 +140,71 @@ t_QUESTION = r'\?'
 t_TILDE = r'~'
 t_DOLLAR = r'\$'
 
+# INICIO IDENTAÇÃO
 
+stack = [0] # Pilha de identação
+states = (('idstate', 'exclusive'),
+          ('dedstate', 'exclusive'),)
 
+def t_LINE_COMENT(t):
+  r'//.*'
+  t.lexer.skip(1)
+
+def t_BLOCK_COMENT(t):
+  r'\/\*(\*(?!\/)|[^*])*\*\/'
+  t.lexer.skip(1)
+
+def t_breakline(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value) 
+    t.lexer.begin('idstate')
+
+def t_idstate_blankline(t):
+    r'([ \t]+)\n'
+    pass
+
+def space_counter(token):
+    spaces = 0
+    for c in token.value:
+        if c == ' ':
+            spaces += 1
+        elif c == '\t':
+            spaces += 8 - (spaces % 8)
+    return spaces
+
+def t_idstate_linewithcode(t):
+    '([ \t]+) | .'                 # reconhecer espaços tabs e qualquer caractere
+    n_spaces = space_counter(t)
+    t.lexer.begin('INITIAL')
+    if n_spaces < stack[-1]:
+        t.lexer.skip(-len(t.value))
+        stack.pop()
+        t.type='DEDENT'
+        t.lexer.begin('dedstate')
+        return t
+    elif n_spaces > stack[-1]:
+        stack.append(n_spaces)
+        t.type='IDENT'
+        return t
+    elif n_spaces == 0:
+        t.lexer.skip(-1)
+
+def t_dedstate_linewithdedent(t):
+    '([ \t]+) | .'                  # reconhecer espaços tabs e qualquer caractere
+    n_spaces = space_counter(t)
+    if n_spaces < stack[-1]:
+        t.lexer.skip(-len(t.value))
+        stack.pop()
+        t.type='DEDENT'
+        return t
+    elif n_spaces >= stack[-1]:  
+        t.lexer.begin('INITIAL')
+        if n_spaces > stack[-1]:
+            print('Erro de dedentação --->', n_spaces)
+        elif n_spaces == 0:
+            t.lexer.skip(-1)
+
+# FIM DA IDENTAÇÃO
 
 def t_ID(t):
    r'[a-zA-Z_][a-zA-Z_0-9]*'
@@ -152,26 +216,41 @@ def t_NUMBER(t):
    t.value = int(t.value)
    return t
 
-def t_newline(t):
-   r'\n+'
-   t.lexer.lineno += len(t.value)
+def t_FLOAT(t):
+   r'\d+\.\d+'
+   t.value = float(t.value)
+   return t
 
-def t_LINE_COMENT(t):
-  r'//.*'
-  t.lexer.skip(1)
 
-def t_BLOCK_COMENT(t):
-  r'\/\*(\*(?!\/)|[^*])*\*\/'
-  t.lexer.skip(1)
 
 t_ignore = ' \t'
+t_dedstate_ignore= ''
+t_idstate_ignore= ''
+
+
 
 def t_error(t):
-   print("Illegal character '%s'" % t.value[0])
-   t.lexer.skip(1)
+    print("ERROR in INITIAL state")
+    print(t.value)
+    t.lexer.skip(1)
+
+def t_idstate_error(t):
+    print("ERROR in idstate state")
+    t.lexer.skip(1)
+
+def t_dedstate_error(t):
+    print("ERROR in dedstate state")
+    t.lexer.skip(1)
 
 lexer = lex.lex()
+
 lexer.input('''
+as
+    as
+        as
+        as
+            as
+    as
 as
 async
 await
@@ -209,7 +288,6 @@ type
 union
 unsafe
 use
-where
 while
 ...
 // Isso aqui é um comentário
