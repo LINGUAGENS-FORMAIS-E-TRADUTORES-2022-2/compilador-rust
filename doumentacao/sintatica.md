@@ -1,32 +1,34 @@
-program → funcdecl | 
+```
+program → funcdecl |
           funcdecl program |
-          declvar | decvar program
+          declvar |
+          decvar program
 
 declvar →   let assign ';' |
             let mut assign ';'
 
 funcdecl → signature body
 
-signature → fn ID ""("" sigParams ")"
+signature → fn ID "(" sigParams ")"
 
-sigparams → ID ':'  tipo | 
+sigparams → ID ':'  tipo |
             ID ':'  tipo "," sigparams
 
 body → "{" stms "}"
 
 bodyorstm → stm | body
 
-stms → stm  | 
+stms → stm  |
        stm  stms
 
 stm → exp ";" |
-      WHILE exp bodyorstm| 
+      WHILE exp bodyorstm|
       IF exp bodyorstm |
       IF exp bodyorstm ELSE stm |
       FOR ID 'in' stm2 body |
       FOR ID 'in' ID body |
-      return exp ";" |
-      
+      RETURN exp ";"
+
 stm2 → '(' exp..exp ')'|
        '(' exp..exp ')'.rev()
 
@@ -53,26 +55,27 @@ exp → exp "+" exp |
       exp "&&" exp |
       exp "||" exp |
       exp "??" exp |
-      exp "expr1 ? expr2 : expr3" exp |
-      exp ".. ?.." |
+      exp "?" exp ":" exp |
       exp "=" exp |
       exp "*=" exp |
       exp "/=" exp |
-      exp "+=" exp | 
+      exp "+=" exp |
       exp "-=" exp |
       exp "&=" exp |
       exp "^=" exp |
-      call | 
-      assign | 
-      NUM | 
+      call |
+      assign |
+      NUM |
       ID
 
-call → ID "("params")" | 
+call → ID "("params")" |
        ID "(" ")"
 
-params → exp"," params | 
+params → exp"," params |
          exp
 
 assign → ID "=" exp
 
 tipo → 'i32' | 'u32' | 'f32' | 'String' | 'char'
+
+```
