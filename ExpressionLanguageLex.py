@@ -1,5 +1,5 @@
 import ply.lex as lex
-
+from teste import *
 reservadas = {
     'as': 'AS',
     'async': 'ASYNC',
@@ -107,6 +107,7 @@ tokens = [
     'LEFTBRACKET'
 ] + list(reservadas.values())
 
+t_LET = 'let'
 t_PLUS = r'\+'
 t_MINUS = r'-'
 t_STAR = r'\*'
@@ -125,7 +126,7 @@ t_MINUSEQ = r'-='
 t_STAREQ = r'\*='
 t_SLASHEQ = r'/='
 t_PERCENTEQ = r'%='
-t_CARETEQ = r'^='
+t_CARETEQ = r'\^='
 t_ANDEQ = r'&='
 t_OREQ = r'\|='
 t_SHLEQ = r'<<='
@@ -273,24 +274,8 @@ def t_dedstate_error(t):
 
 
 lexer = lex.lex()
+variavel = cod_2
 
-lexer.input('''
-fn main() {
-    println!("Hello, world!");
-}
-
-// Isso aqui é um comentário
-// outro comentário
-else // Esse é um comentário depois de uma palavra reservada
-else //Esse é um comentário 328472 depois de uma palavra reservada sem o espaço e com numeros
-
-/* Isso é um comentário de bloco */
-
-/* 
- * Isso também é um comentário de bloco
- * mas é um comentário com mais de uma linha
- */
- use
-''')
+lexer.input(cod_2)
 # for tok in lexer:
 #     print(tok.type, tok.value, tok.lineno, tok.lexpos)
