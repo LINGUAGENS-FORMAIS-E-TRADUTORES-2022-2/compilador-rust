@@ -141,14 +141,25 @@ def p_stm2(p):
 #     ('left', 'CARET')
 # )
 
+def p_exp_star(p):
+    ''' exp : exp STAR exp1
+             | exp1
+    '''
+    if len(p) == 2:
+        p[0] = p[1]
+    else:
+        p[0] = (p[1], p[3])
 
-def p_exp_assign(p):
-    ''' exp : exp EQEQ exp1
-            | exp1
+def p_exp_slash(p):
+    ''' exp : exp SLASH exp1
 
     '''
-    pass
+    p[0] = (p[1], p[3])
 
+def p_exp_percent(p):
+    ''' exp : exp PERCENT exp1             
+    '''
+    p[0] = (p[1], p[3])
 
 def p_exp_plus(p):
     '''exp1 : exp1 PLUS exp2
@@ -169,28 +180,11 @@ def p_exp_minus(p):
         p[0] = (p[1], p[3])
 
 
-def p_exp_star(p):
-    ''' exp2 : exp2 STAR exp3
-             | exp3
-    '''
-    if len(p) == 2:
-        p[0] = p[1]
-    else:
-        p[0] = (p[1], p[3])
-
-
-def p_exp_slash(p):
-    ''' exp2 : exp2 SLASH exp3
-
+def p_exp_and(p):
+    '''exp2 : exp2 AND exp3
+            | exp3            
     '''
     p[0] = (p[1], p[3])
-
-
-def p_exp_percent(p):
-    ''' exp2 : exp2 PERCENT exp3             
-    '''
-    p[0] = (p[1], p[3])
-
 
 def p_exp_caret(p):
     ''' exp3 : exp3 CARET exp4
@@ -201,144 +195,85 @@ def p_exp_caret(p):
     else:
         p[0] = (p[1], p[3])
 
-
-def p_exp_exp4_to_exp5(p):
-    ''' exp4 : exp5
-    '''
-
-
-def p_exp_and(p):
-    ''' exp4 : exp4 AND exp5
-
-    '''
-    p[0] = (p[1], p[3])
-
-
 def p_exp_or(p):
-    ''' exp4 : exp4 OR exp5
-
+    '''exp4 : exp4 OR exp5
+            | exp5             
     '''
     p[0] = (p[1], p[3])
 
+def p_exp_assign(p):
+    ''' exp5 : exp5 EQEQ exp6
+            | exp6
 
-def p_exp_oror(p):
-    ''' exp4 : exp4 OROR exp5
     '''
     pass
 
-
-def p_exp_andand(p):
-    ''' exp4 : exp4 ANDAND exp5
-    '''
-    pass
-
-
-def p_exp_not(p):
-    ''' exp4 : NOT exp5
-    '''
-    p[0] = (p[1], p[3])
-
-
-def p_exp_ge(p):
-    ''' exp4 : exp4 GE exp5      
-    '''
-    p[0] = (p[1], p[3])
-
-
-def p_exp_gt(p):
-    ''' exp4 : exp4 GT exp5  
-    '''
-    p[0] = (p[1], p[3])
-
-
-def p_exp_le(p):
-    ''' exp4 : exp4 LE exp5      
+def p_exp_ne(p):
+    '''exp5 : exp5 NE exp6      
     '''
     p[0] = (p[1], p[3])
 
 
 def p_exp_lt(p):
-    ''' exp4 : exp4 LT exp5      
+    '''exp5 : exp5 LT exp6     
     '''
     p[0] = (p[1], p[3])
 
 
-# def p_exp_eqeq(p):
-#     ''' exp4 : exp4 EQEQ exp5
-#     '''
-#     pass
-
-
-# def p_exp_eq(p):
-#     ''' exp4 : exp4 EQ exp5
-#     '''
-#     p[0] = (p[1], p[3])
-
-
-def p_exp_slasheq(p):
-    ''' exp4 : exp4 SLASHEQ exp5      
+def p_exp_gt(p):
+    '''exp5 : exp5 GT exp6     
     '''
     p[0] = (p[1], p[3])
 
-
-def p_exp_pluseq(p):
-    ''' exp4 : exp4 PLUSEQ exp5      
+def p_exp_ge(p):
+    ''' exp5 : exp5 GE exp6      
     '''
     p[0] = (p[1], p[3])
 
-
-def p_exp_stareq(p):
-    ''' exp4 : exp4 STAREQ exp5      
+def p_exp_le(p):
+    ''' exp5 : exp5 LE exp6      
     '''
     p[0] = (p[1], p[3])
 
-
-def p_exp_minuseq(p):
-    ''' exp4 : exp4 MINUSEQ exp5      
+def p_exp_andand(p):
+    '''exp6 : exp6 ANDAND exp7
+            | exp7
     '''
-    p[0] = (p[1], p[3])
+    pass
 
-
-def p_exp_andeq(p):
-    ''' exp4 : exp4 ANDEQ exp5      
+def p_exp_oror(p):
+    '''exp7 : exp7 OROR exp8
+            | exp8
     '''
-    p[0] = (p[1], p[3])
-
-
-def p_exp_careteq(p):
-    ''' exp4 : exp4 CARETEQ exp5      
-    '''
-    p[0] = (p[1], p[3])
-
-
-def p_exp_ne(p):
-    ''' exp4 : exp4 NE exp5      
-    '''
-    p[0] = (p[1], p[3])
-
-
-def p_exp_questionandcolon(p):
-    ''' exp5 : exp5 QUESTION exp5 COLON exp6      
-    '''
-    p[0] = (p[1], p[3], p[5])
-
-
-def p_exp_tirarecursao(p):
-    '''
-        exp5 : exp6
-    '''
+    pass
 
 
 def p_exp_number(p):
-    ''' exp6 : NUMBER     
+    '''exp8 : NUMBER
+            
     '''
     p[0] = (p[1])
 
 
 def p_exp_id(p):
-    ''' exp6 : ID     
+    ''' exp8 : ID     
     '''
     p[0] = (p[1])
+
+def p_exp_call(p):
+    ''' exp8 : call     
+    '''
+    p[0] = (p[1])
+
+
+
+def p_exp_questionandcolon(p):
+    ''' exp8 : exp8 QUESTION exp8 COLON exp9    
+    '''
+    p[0] = (p[1], p[3], p[5])
+
+
+
 
 
 # def p_exp_assign2(p):
@@ -346,11 +281,6 @@ def p_exp_id(p):
 #     '''
 #     p[0] = (p[1])
 
-
-def p_exp_call(p):
-    ''' exp6 : call     
-    '''
-    p[0] = (p[1])
 
 
 def p_call(p):
