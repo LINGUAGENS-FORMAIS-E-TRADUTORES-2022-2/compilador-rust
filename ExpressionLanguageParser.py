@@ -1,6 +1,6 @@
 import ply.yacc as yacc
 from ExpressionLanguageLex import *
-
+import SintaxeAbstrata as sa
 
 def p_program(p):
     '''program : funcdecl
@@ -148,13 +148,13 @@ def p_exp_star(p):
     if len(p) == 2:
         p[0] = p[1]
     else:
-        p[0] = (p[1], p[3])
+        p[0] = sa.StarExp(p[1], p[3])
 
 def p_exp_slash(p):
     ''' exp : exp SLASH exp1
 
     '''
-    p[0] = (p[1], p[3])
+    p[0] = sa.SlashExp(p[1], p[3])
 
 def p_exp_percent(p):
     ''' exp : exp PERCENT exp1             
@@ -168,7 +168,7 @@ def p_exp_plus(p):
     if len(p) == 2:
         p[0] = p[1]
     else:
-        p[0] = (p[1], p[3])
+        p[0] = sa.PlusExp(p[1], p[3])
 
 
 def p_exp_minus(p):
@@ -177,75 +177,75 @@ def p_exp_minus(p):
     if len(p) == 2:
         p[0] = p[1]
     else:
-        p[0] = (p[1], p[3])
+        p[0] = sa.MinusExp(p[1], p[3])
 
 
 def p_exp_and(p):
     '''exp2 : exp2 AND exp3
             | exp3            
     '''
-    p[0] = (p[1], p[3])
+    p[0] = sa.AndExp(p[1], p[3])
 
 def p_exp_caret(p):
     ''' exp3 : exp3 CARET exp4
-             | exp4        
+             | exp4       
     '''
     if len(p) == 2:
         p[0] = p[1]
     else:
-        p[0] = (p[1], p[3])
+        p[0] = sa.CaretExp(p[1], p[3])
 
 def p_exp_or(p):
     '''exp4 : exp4 OR exp5
             | exp5             
     '''
-    p[0] = (p[1], p[3])
+    p[0] = sa.OrExp(p[1], p[3])
 
 def p_exp_assign(p):
     ''' exp5 : exp5 EQEQ exp6
             | exp6
 
     '''
-    pass
+    p[0] = sa.AssignExp(p[1], p[3])
 
 def p_exp_ne(p):
     '''exp5 : exp5 NE exp6      
     '''
-    p[0] = (p[1], p[3])
+    p[0] = sa.NeExp(p[1], p[3]) 
 
 
 def p_exp_lt(p):
     '''exp5 : exp5 LT exp6     
     '''
-    p[0] = (p[1], p[3])
+    p[0] = sa.LtExp(p[1], p[3])
 
 
 def p_exp_gt(p):
     '''exp5 : exp5 GT exp6     
     '''
-    p[0] = (p[1], p[3])
+    p[0] = sa.GtExp(p[1], p[3])
 
 def p_exp_ge(p):
     ''' exp5 : exp5 GE exp6      
     '''
-    p[0] = (p[1], p[3])
+    p[0] = sa.GeExp(p[1], p[3])
 
 def p_exp_le(p):
     ''' exp5 : exp5 LE exp6      
     '''
-    p[0] = (p[1], p[3])
+    p[0] = sa.LeExp(p[1], p[3])
 
 def p_exp_andand(p):
     '''exp6 : exp6 ANDAND exp7
             | exp7
     '''
-    pass
+    p[0] = sa.AndAndExp(p[1], p[3])
 
 def p_exp_oror(p):
     '''exp7 : exp7 OROR exp8
             | exp8
     '''
-    pass
+    p[0] = sa.OrOrExp(p[1], p[3])
 
 
 def p_exp_number(p):
