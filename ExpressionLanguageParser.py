@@ -113,34 +113,6 @@ def p_stm2(p):
     '''
     pass
 
-
-# precedence = (
-#     (
-#         'left',
-#         'PLUSEQ',
-#         'MINUSEQ',
-#         'STAREQ',
-#         'SLASHEQ',
-#         'PERCENTEQ',
-#         'CARETEQ',
-#         'ANDEQ',
-#         'OREQ',
-#         'SHLEQ',
-#         'SHREQ',
-#         'EQ',
-#         'EQEQ',
-#         'NE',
-#         'GT',
-#         'LT',
-#         'GE',
-#         'LE',
-#     ),
-#     ('left', 'PLUS', 'MINUS', 'SHL', 'SHR'),
-#     ('left', 'NOT', 'AND', 'OR', 'ANDAND', 'OROR'),
-#     ('left', 'STAR', 'SLASH', 'PERCENT'),
-#     ('left', 'CARET')
-# )
-
 def p_exp_star(p):
     ''' exp : exp STAR exp1
              | exp1
@@ -252,13 +224,13 @@ def p_exp_number(p):
     '''exp8 : NUMBER
             
     '''
-    p[0] = (p[1])
+    p[0] = sa.NumberExp(p[1])
 
 
 def p_exp_id(p):
     ''' exp8 : ID     
     '''
-    p[0] = (p[1])
+    p[0] = sa.IdExp(p[1])
 
 def p_exp_call(p):
     ''' exp8 : call     
@@ -267,13 +239,10 @@ def p_exp_call(p):
 
 
 
-def p_exp_questionandcolon(p):
-    ''' exp8 : exp8 QUESTION exp8 COLON exp9    
-    '''
-    p[0] = (p[1], p[3], p[5])
-
-
-
+# def p_exp_questionandcolon(p):
+#     ''' exp8 : exp8 QUESTION exp8 COLON exp9    
+#     '''
+#     p[0] = (p[1], p[3], p[5])
 
 
 # def p_exp_assign2(p):
@@ -288,17 +257,20 @@ def p_call(p):
             | ID LEFTPARENTHESES RIGHTPARENTHESES
     '''
     if len(p) == 5:
-        p[0] = (p[1], p[3])
+        p[0] = sa.CallExp(p[1], p[3])
     else:
-        p[0] = (p[1])
+        p[0] = sa.CallExp(p[1])
 
 
 def p_params(p):
     '''params : exp COMMA params 
                 | exp
     '''
-    pass
-
+    if len(p) == 2:
+        p[0] = sa.OneParams(p[1]) 
+    elif len(p) == 4:
+        p[0] = sa.MoreParams(p[1], p[3])
+ 
 
 def p_assign(p):
     '''assign : ID EQ exp

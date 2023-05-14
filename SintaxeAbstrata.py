@@ -116,7 +116,7 @@ class AndAndExp (Exp):
         self.exp1 = exp1
         self.exp1 = exp2
     def accept (self, visitor):
-        return visitor.AndAndExp(exp)
+        return visitor.AndAndExp(self)
 
 class OrOrExp (Exp):
     def __init__ (self, exp1, exp2):
@@ -124,7 +124,42 @@ class OrOrExp (Exp):
         self.exp2 = exp2
     def accpet (self, visitor):
         return visitor.OrOrExp (self)
-    
 
+class NumberExp (Exp):
+    def __init__ (self, num):
+        self.num = num
+    def accpet (self, visitor):
+        return visitor.NumberExp (self)
+    
+class IdExp (Exp):
+    def __init__ (self, id):
+        self.id = id
+    def accpet (self, visitor):
+        return visitor.IdExp (self)
+    
+class CallExp (Exp):
+    def __init__ (self, exp1, exp2):
+        self.exp1 = exp1
+        self.exp1 = exp2
+    def accept (self, visitor):
+        return visitor.CallExp(self)
+    
+class Params(metaclass=ABCMeta):
+    @abstractmethod
+    def accept(self, visitor):
+        pass
+    
+class OneParams(Params):
+    def __init__(self, exp):
+        self.exp = exp
+    def accept(self, visitor):
+        return visitor.visitgOneParams(self)
+
+class MoreParams(Params):
+    def __init__(self, exp, params):
+        self.exp = exp
+        self.params = params
+    def accept(self, visitor):
+        return visitor.visitMoreParams(self)
 
     
