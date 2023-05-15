@@ -33,38 +33,38 @@ class SigParams(metaclass=ABCMeta):
     def accept(self, visitor):
         pass
 
-class SParams(SigParams):
+class SinglParams(SigParams):
     def __init__(self, type, id):
         self.type = type
         self.id = id
     def accept(self, visitor):
-        return visitor.visitSParams(self)
+        return visitor.visitSinglParams(self)
     
-class CParams(SigParams):
+class CompoundParams(SigParams):
     def __init__(self, type, id, sigParams):
         self.type = type
         self.id = id
         self.sigParams = sigParams
     def accept(self, visitor):
-        return visitor.visitCParams(self)
+        return visitor.visitCompoundParams(self)
 
 class Stms(metaclass=ABCMeta):
     @abstractmethod
     def accept(self, visitor):
         pass
 
-class SStm(Stms):
+class SingleStm(Stms):
     def __init__(self, stm):
         self.stm = stm
     def accept(self, visitor):
-        return visitor.visitSStm(self)
+        return visitor.visitSingleStm(self)
 
-class CCStm(Stms):
+class CompoundStm(Stms):
     def __init__(self, stm, stms):
         self.stm = stm
         self.stms = stms
     def accept(self, visitor):
-        return visitor.visitCStm(self)
+        return visitor.visitCompoundStm(self)
     
 
     
@@ -270,5 +270,39 @@ class MoreParams(Params):
         self.params = params
     def accept(self, visitor):
         return visitor.visitMoreParams(self)
+    
+class Tipo (metaclass=ABCMeta):
+    @abstractmethod
+    def accept(self, visitor):
+        pass
 
+class IntType(Tipo):
+    def __init__(self, intTipo):
+        self.exp = intTipo
+    def accept(self, visitor):
+        return visitor.visitIntType(self)
+    
+class UIntType(Tipo):
+    def __init__(self, uIntTipo):
+        self.exp = uIntTipo
+    def accept(self, visitor):
+        return visitor.visitUIntType(self)
+
+class FloatType(Tipo):
+    def __init__(self, floatTipo):
+        self.exp = floatTipo
+    def accept(self, visitor):
+        return visitor.visitFloatType(self)
+    
+class StringType(Tipo):
+    def __init__(self, stringTipo):
+        self.exp = stringTipo
+    def accept(self, visitor):
+        return visitor.visitStringType(self)
+    
+class CharType(Tipo):
+    def __init__(self, charTipo):
+        self.exp = charTipo
+    def accept(self, visitor):
+        return visitor.visitCharType(self)
     

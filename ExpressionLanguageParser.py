@@ -45,10 +45,10 @@ def p_sigparams(p):
                 | ID COLON tipo COMMA sigparams
     '''
     if len(p) == 4:
-        p[0] = sa.SParams([(p[1], p[3])])
+        p[0] = sa.SinglParams([(p[1], p[3])])
            
     else:
-         p[0] = sa.CParams(p[1], p[3], p[5])
+         p[0] = sa.CompoundParams(p[1], p[3], p[5])
 
 
 
@@ -58,9 +58,9 @@ def p_stms(p):
             | stm  stms
     '''
     if (len(p) == 2):
-        p[0] = sa.SStm(p[1])
+        p[0] = sa.SingleStm(p[1])
     else:
-        p[0] = sa.CStm(p[1], p[2])
+        p[0] = sa.CompoundStm(p[1], p[2])
 
 def p_body(p):
     '''body : LEFTBRACKET stms RIGHTBRACKET
@@ -304,7 +304,16 @@ def p_tipo(p):  # PROF ME AJUDAAAAA
             | STRING
             | CHAR
     '''
-    pass
+    if p[1] == 'ITT':
+        p[0] = sa.IntType()
+    elif p[1] == 'UTT':
+        p[0] = sa.UIntType()
+    elif p[1] == 'FTT':
+        p[0] = sa.FloatType()
+    elif p[1] == 'STRING':
+        p[0] = sa.StringType()
+    elif p[1] == 'CHAR':
+        p[0] = sa.CharType()
 
 
 parser = yacc.yacc()
