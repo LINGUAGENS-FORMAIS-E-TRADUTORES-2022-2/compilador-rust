@@ -105,14 +105,20 @@ class SemiStm(Body):
     def __init__(self, exp):
         self.exp = exp
     def accept(self, visitor):
-        return visitor.visitSemitm(self)
+        return visitor.visitSemiStm(self)
+    
+class assignStm(Body):
+    def __init__(self, exp):
+        self.exp = exp
+    def accept(self, visitor):
+        return visitor.visitassignStm(self)
 
 class Stm2Stm(Body):
     def __init__(self, exp1, exp2):
         self.exp = exp1
         self.exp = exp2
     def accept(self, visitor):
-        return visitor.Stm2Stm(self)
+        return visitor.visitStm2Stm(self)
 
 class Exp(metaclass=ABCMeta):
     @abstractmethod
@@ -124,14 +130,14 @@ class PlusExp(Exp):
         self.exp1 = exp1
         self.exp2 = exp2
     def accept(self, visitor):
-        return visitor.PlusExp(self)
+        return visitor.visitPlusExp(self)
     
 class MinusExp(Exp):
     def __init__(self, exp1, exp2):
         self.exp1 = exp1
         self.exp2 = exp2
     def accept(self, visitor):
-        return visitor.MinusExp(self)
+        return visitor.visitMinusExp(self)
 
 
 class SlashExp(Exp):
@@ -139,110 +145,110 @@ class SlashExp(Exp):
         self.exp1 = exp1
         self.exp2 = exp2
     def accept(self, visitor):
-        return visitor.SlashExp(self)
+        return visitor.visitSlashExp(self)
     
 class StarExp(Exp):
     def __init__(self, exp1, exp2):
         self.exp1 = exp1
         self.exp2 = exp2
     def accept(self, visitor):
-        return visitor.StarExp(self)
+        return visitor.visitStarExp(self)
     
 class AndExp(Exp):
     def __init__(self, exp1, exp2):
         self.exp1 = exp1
         self.exp2 = exp2
     def accept(self, visitor):
-        return visitor.AndExp(self)
+        return visitor.visitAndExp(self)
     
 class CaretExp(Exp):
     def __init__(self, exp1, exp2):
         self.exp1 = exp1
         self.exp2 = exp2
     def accept(self, visitor):
-        return visitor.CaretExp(self)
+        return visitor.visitCaretExp(self)
     
 class OrExp(Exp):
     def __init__(self, exp1, exp2):
         self.exp1 = exp1
         self.exp2 = exp2
     def accept(self, visitor):
-        return visitor.OrExp(self)
+        return visitor.visitOrExp(self)
     
 class AssignExp(Exp):
     def __init__(self, exp1, exp2):
         self.exp1 = exp1
         self.exp2 = exp2
     def accept(self, visitor):
-        return visitor.AssignEx(self)
+        return visitor.visitAssignExp(self)
     
 class NeExp(Exp):
     def __init__(self, exp1, exp2):
         self.exp1 = exp1
         self.exp2 = exp2
     def accept(self, visitor):
-        return visitor.NeExp(self)
+        return visitor.visitNeExp(self)
     
 class LtExp(Exp):
     def __init__(self, exp1, exp2):
         self.exp1 = exp1
         self.exp2 = exp2
     def accept(self, visitor):
-        return visitor.LtExp(self)
+        return visitor.visitLtExp(self)
     
 class GtExp (Exp):
     def __init__ (self, exp1, exp2):
         self.exp1 = exp1
         self.exp2 = exp2
     def accept (self, visitor):
-        return visitor.GtExp(self)
+        return visitor.visitGtExp(self)
 
 class GeExp (Exp):
     def __init__ (self, exp1, exp2):
         self.exp1 = exp1
         self.exp2 = exp2
     def accept (self, visitor):
-        return visitor.GeExp(self)
+        return visitor.visitGeExp(self)
 
 class LeExp (Exp):
     def __init__ (self, exp1, exp2):
         self.exp1 = exp1
         self.exp2 = exp2
     def accept (self, visitor):
-        return visitor.LeExp(self)
+        return visitor.visitLeExp(self)
     
 class AndAndExp (Exp):
     def __init__ (self, exp1, exp2):
         self.exp1 = exp1
         self.exp1 = exp2
     def accept (self, visitor):
-        return visitor.AndAndExp(self)
+        return visitor.visitAndAndExp(self)
 
 class OrOrExp (Exp):
     def __init__ (self, exp1, exp2):
         self.exp1 = exp1
         self.exp2 = exp2
     def accpet (self, visitor):
-        return visitor.OrOrExp (self)
+        return visitor.visitOrOrExp (self)
 
 class NumberExp (Exp):
     def __init__ (self, num):
         self.num = num
     def accpet (self, visitor):
-        return visitor.NumberExp (self)
+        return visitor.visitNumberExp (self)
     
 class IdExp (Exp):
     def __init__ (self, id):
         self.id = id
     def accpet (self, visitor):
-        return visitor.IdExp (self)
+        return visitor.visitIdExp (self)
     
 class EqExp(Exp):
     def __init__(self, exp1, exp2):
         self.exp1 = exp1
         self.exp2 = exp2
     def accept(self, visitor):
-        return visitor.EqExp(self)
+        return visitor.visitEqExp(self)
     
 
     
@@ -256,7 +262,7 @@ class CallParams (Exp):
         self.id = id
         self.params = params
     def accept (self, visitor):
-        return visitor.CallParams(self)
+        return visitor.visitCallParams(self)
     
 class OneParams(Params):
     def __init__(self, exp):
