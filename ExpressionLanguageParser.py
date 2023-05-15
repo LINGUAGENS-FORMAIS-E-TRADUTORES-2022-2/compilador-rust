@@ -8,47 +8,64 @@ def p_program(p):
                 | declvar 
                 | declvar program
     '''
-    pass
+    if len(p) == 3:
+        p[0] = [p[1]]
+    else:
+        p[0] = [p[1]] + p[2]
 
 
-def p_declvar(p):
+def p_DecDeclvar(p):
     '''declvar : LET assign SEMI 
                 | LET MUT assign SEMI
     '''
-    pass
+    if len(p) == 4:
+        p[0] = sa.DecDeclvar(p[2])
+    elif len(p) == 5:
+        p[0] = sa.DecDeclvar(p[3])
+
 
 
 def p_funcdecl(p):
-    '''funcdecl : signature body
-    '''
-    pass
+    '''funcdecl : signature body'''
+    p[0] = sa.FuncDeclConcrete(p[1], p[2])
 
 
 def p_signature(p):
     '''signature : FN ID LEFTPARENTHESES sigparams RIGHTPARENTHESES
                 | FN ID LEFTPARENTHESES RIGHTPARENTHESES
     '''
-    pass
+    if isinstance(p[4], sa.SigParams):
+        p[0] = sa.SignatureConcrete(p[1], p[2], p[4])
+    else:
+        p[0] = sa.SignatureConcrete(p[1], p[2], [])
 
 
 def p_sigparams(p):
     '''sigparams : ID COLON tipo
                 | ID COLON tipo COMMA sigparams
     '''
-    pass
+    if len(p) == 4:
+        p[0] = sa.SParams([(p[1], p[3])])
+           
+    else:
+         p[0] = sa.CParams(p[1], p[3], p[5])
+
+
 
 
 def p_stms(p):
     '''stms : stm  
             | stm  stms
     '''
-    pass
-
+    if (len(p) == 2):
+        p[0] = sa.SStm(p[1])
+    else:
+        p[0] = sa.CStm(p[1], p[2])
 
 def p_body(p):
     '''body : LEFTBRACKET stms RIGHTBRACKET
     '''
-    pass
+    p[0] = sa.BodyStm(p[1])
 
 
 def p_bodyorstm(p):
@@ -56,71 +73,72 @@ def p_bodyorstm(p):
                 | body
 
     '''
-    pass
+    p[0] = sa.BodyorStm(p[1])
 
 
 def p_stm_semi(p):
     '''stm : exp SEMI
     '''
-    pass
+    p[0] = sa.SemiStm(p[1])
 
 
 def p_stm_assign(p):
     '''stm : assign SEMI
     '''
-    pass
+    p[0] = sa.assignStm(p[1])
 
 
 def p_stm_while(p):
     '''stm : WHILE exp bodyorstm
     '''
-    pass
+    p[0] = sa.WhileStm(p[2], p[3])
 
 
 def p_stm_if(p):
     ''' stm : IF exp bodyorstm 
     '''
-    pass
+    p[0] = sa.IfStm(p[2], p[3])
 
 
 def p_stm_if2(p):  # PROF ME AJUDAAAAA
     ''' stm :  IF exp bodyorstm ELSE stm 
     '''
-    pass
+    p[0] = sa.IfStm(p[2], p[3], p[5])
 
 
 def p_stm_for(p):
     ''' stm : FOR ID IN stm2 body
     '''
-    pass
+    p[0] = sa.ForStm(p[4], p[5])
 
 
 def p_stm_for2(p):
     ''' stm : FOR ID IN ID body 
     '''
-    pass
+    p[0] = sa.For2Stm( p[5])
 
 
 def p_stm_return(p):
     ''' stm : RETURN exp SEMI
     '''
-    pass
+    p[0] = sa.Returntm( p[2])
 
 
 def p_stm2(p):
     '''stm2 : LEFTPARENTHESES exp DOTDOT exp RIGHTPARENTHESES
             | LEFTPARENTHESES exp DOTDOT exp RIGHTPARENTHESES DOT ID LEFTPARENTHESES RIGHTPARENTHESES
     '''
-    pass
+    p[0] = sa.Stm2Stm(p[1], p[3])
 
 def p_exp_star(p):
     ''' exp : exp STAR exp1
              | exp1
     '''
     if len(p) == 2:
-        p[0] = p[1]
-    else:
         p[0] = sa.StarExp(p[1], p[3])
+    else:
+        p[0] = p[1]
+        
 
 def p_exp_slash(p):
     ''' exp : exp SLASH exp1
@@ -257,9 +275,9 @@ def p_call(p):
             | ID LEFTPARENTHESES RIGHTPARENTHESES
     '''
     if len(p) == 5:
-        p[0] = sa.CallExp(p[1], p[3])
+        p[0] = sa.CallParams(p[1], p[3])
     else:
-        p[0] = sa.CallExp(p[1])
+        p[0] = sa.CallParams(p[1])
 
 
 def p_params(p):
@@ -275,7 +293,8 @@ def p_params(p):
 def p_assign(p):
     '''assign : ID EQ exp
     '''
-    pass
+    p[0] = sa.EqExp(p[1], p[3])
+    
 
 
 def p_tipo(p):  # PROF ME AJUDAAAAA

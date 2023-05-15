@@ -14,6 +14,106 @@ class FuncDeclConcrete(FuncDecl):
     def accept(self, visitor):
         return visitor.visitFuncDeclConcrete(self)
     
+class Declvar(metaclass=ABCMeta):
+    @abstractmethod
+    def accept(self, visitor):
+        pass
+
+class DecDeclvar(Declvar):
+    def __init__(self, signature, body):
+        self.signature = signature
+        self.body = body
+    def accept(self, visitor):
+        return visitor.visitDecDeclvar(self)
+    
+
+
+class SigParams(metaclass=ABCMeta):
+    @abstractmethod
+    def accept(self, visitor):
+        pass
+
+class SParams(SigParams):
+    def __init__(self, type, id):
+        self.type = type
+        self.id = id
+    def accept(self, visitor):
+        return visitor.visitSParams(self)
+    
+class CParams(SigParams):
+    def __init__(self, type, id, sigParams):
+        self.type = type
+        self.id = id
+        self.sigParams = sigParams
+    def accept(self, visitor):
+        return visitor.visitCParams(self)
+
+class Stms(metaclass=ABCMeta):
+    @abstractmethod
+    def accept(self, visitor):
+        pass
+
+class SStm(Stms):
+    def __init__(self, stm):
+        self.stm = stm
+    def accept(self, visitor):
+        return visitor.visitSStm(self)
+
+class CCStm(Stms):
+    def __init__(self, stm, stms):
+        self.stm = stm
+        self.stms = stms
+    def accept(self, visitor):
+        return visitor.visitCStm(self)
+    
+
+    
+
+class Signature(metaclass=ABCMeta):
+    @abstractmethod
+    def accept(self, visitor):
+        pass
+
+class SignatureConcrete(Signature):
+    def __init__(self, type, id, sigParams):
+        self.type = type
+        self.id = id
+        self.sigParams = sigParams
+    def accept(self, visitor):
+        return visitor.visitSignatureConcrete(self)
+    
+
+class Body(metaclass=ABCMeta):
+    @abstractmethod
+    def accept(self, visitor):
+        pass
+
+
+class BodyStm(Body):
+    def __init__(self, stms):
+        self.stms = stms
+    def accept(self, visitor):
+        return visitor.visitBodyStm(self)
+
+class BodyorStm(Body):
+    def __init__(self, stms):
+        self.stms = stms
+    def accept(self, visitor):
+        return visitor.visitBodyorStm(self)
+    
+class SemiStm(Body):
+    def __init__(self, exp):
+        self.exp = exp
+    def accept(self, visitor):
+        return visitor.visitSemitm(self)
+
+class Stm2Stm(Body):
+    def __init__(self, exp1, exp2):
+        self.exp = exp1
+        self.exp = exp2
+    def accept(self, visitor):
+        return visitor.Stm2Stm(self)
+
 class Exp(metaclass=ABCMeta):
     @abstractmethod
     def accept(self, visitor):
@@ -137,17 +237,26 @@ class IdExp (Exp):
     def accpet (self, visitor):
         return visitor.IdExp (self)
     
-class CallExp (Exp):
-    def __init__ (self, exp1, exp2):
+class EqExp(Exp):
+    def __init__(self, exp1, exp2):
         self.exp1 = exp1
-        self.exp1 = exp2
-    def accept (self, visitor):
-        return visitor.CallExp(self)
+        self.exp2 = exp2
+    def accept(self, visitor):
+        return visitor.EqExp(self)
+    
+
     
 class Params(metaclass=ABCMeta):
     @abstractmethod
     def accept(self, visitor):
         pass
+
+class CallParams (Exp):
+    def __init__ (self, id, params):
+        self.id = id
+        self.params = params
+    def accept (self, visitor):
+        return visitor.CallParams(self)
     
 class OneParams(Params):
     def __init__(self, exp):
