@@ -253,7 +253,7 @@ def p_exp_id(p):
 def p_exp_call(p):
     ''' exp8 : call     
     '''
-    p[0] = (p[1])
+    p[0] = sa.CallExp(p[1])
 
 
 

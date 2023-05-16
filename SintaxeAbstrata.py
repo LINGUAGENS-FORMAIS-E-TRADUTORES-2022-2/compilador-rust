@@ -297,6 +297,13 @@ class IdExp (Exp):
     def accpet (self, visitor):
         return visitor.visitIdExp (self)
     
+    
+class CallExp (Exp):
+    def __init__ (self, call):
+        self.call = call
+    def accpet (self, visitor):
+        return visitor.visitCallExp (self)
+    
 class EqExp(Exp):
     def __init__(self, exp1, exp2):
         self.exp1 = exp1

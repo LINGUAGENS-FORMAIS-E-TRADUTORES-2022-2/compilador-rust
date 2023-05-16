@@ -102,6 +102,10 @@ class Visitor():
         def visitIdExp(self, idExp):
             print(idExp.id, end='')
 
+        
+        def visitCallExp(self, callExp):
+            print(callExp.id, end='')
+
         def visitWhileStm(self, whileStm):
             print(blank(),'while (', end='', sep='')
             whileStm.exp.accept(self)
