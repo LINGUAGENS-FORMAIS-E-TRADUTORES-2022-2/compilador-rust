@@ -48,6 +48,52 @@ class CompoundParams(SigParams):
     def accept(self, visitor):
         return visitor.visitCompoundParams(self)
 
+class Stm(metaclass=ABCMeta):
+    @abstractmethod
+    def accept(self, visitor):
+        pass
+
+class WhileStm(Stm):
+    def __init__(self, exp, bodyorstm):
+        self.exp = exp
+        self.bodyorstm = bodyorstm
+    def accept(self, visitor):
+        return visitor.visitWhileStm(self)
+    
+class IfStm(Stm):
+    def __init__(self, exp, bodyorstm):
+        self.exp = exp
+        self.bodyorstm = bodyorstm
+    def accept(self, visitor):
+        return visitor.visitIfStm(self)
+
+class If2Stm(Stm):
+    def __init__(self, exp, bodyorstm, stm):
+        self.exp = exp
+        self.bodyorstm = bodyorstm
+        self.stm = stm
+    def accept(self, visitor):
+        return visitor.visitIf2Stm(self)
+
+class ForStm(Stm):
+    def __init__(self,stm2, body):
+        self.stm2 = stm2
+        self.body = body
+    def accept(self, visitor):
+        return visitor.visitForStm(self)
+    
+class For2Stm(Stm):
+    def __init__(self, body):
+        self.body = body
+    def accept(self, visitor):
+        return visitor.visitFor2Stm(self)
+    
+class ReturnStm(Stm):
+    def __init__(self, exp):
+        self.exp = exp
+    def accept(self, visitor):
+        return visitor.visitreturnStm(self)
+    
 class Stms(metaclass=ABCMeta):
     @abstractmethod
     def accept(self, visitor):
@@ -107,11 +153,11 @@ class SemiStm(Body):
     def accept(self, visitor):
         return visitor.visitSemiStm(self)
     
-class assignStm(Body):
-    def __init__(self, exp):
-        self.exp = exp
+class AssignStm(Body):
+    def __init__(self, stm):
+        self.stm = stm
     def accept(self, visitor):
-        return visitor.visitassignStm(self)
+        return visitor.visitAssignStm(self)
 
 class Stm2Stm(Body):
     def __init__(self, exp1, exp2):
@@ -182,6 +228,14 @@ class AssignExp(Exp):
     def accept(self, visitor):
         return visitor.visitAssignExp(self)
     
+
+class PercentExp(Exp):
+    def __init__(self, exp1, exp2):
+        self.exp1 = exp1
+        self.exp2 = exp2
+    def accept(self, visitor):
+        return visitor.visitPercentExp(self)
+
 class NeExp(Exp):
     def __init__(self, exp1, exp2):
         self.exp1 = exp1

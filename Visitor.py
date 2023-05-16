@@ -91,6 +91,25 @@ class Visitor():
             print(' >= ', end='')
             geExp.exp2.accept(self)
 
+        def visitPercentExp(self, percentExp):
+            percentExp.exp1.accept(self)
+            print(' % ', end='')
+            percentExp.exp2.accept(self)
+
         def visitNumberExp(self, numberExp):
             print(numberExp.num, end='')
+
+        def visitIdExp(self, idExp):
+            print(idExp.id, end='')
+
+        def visitWhileStm(self, whileStm):
+            print(blank(),'while (', end='', sep='')
+            whileStm.exp.accept(self)
+            print(') ', end='', sep='')
+            whileStm.bodyorstm.accept(self)
+            
+        def visitStmReturn(self, returnStm):
+            print (blank(), 'return ', end='', sep='')
+            returnStm.exp.accept(self)
+            print (';')
             

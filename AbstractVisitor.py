@@ -122,6 +122,10 @@ class AbstractVisitor(metaclass=ABCMeta):
           
         @abstractmethod
         def visitEqExp(self, eqExp):
+              pass    
+
+        @abstractmethod
+        def visitPercentExp(self, percentExp):
               pass     
 
         
@@ -157,3 +161,30 @@ class AbstractVisitor(metaclass=ABCMeta):
         @abstractmethod
         def visitCharType(self, charType):
               pass       
+        
+      
+        @abstractmethod
+        def visitWhileStm(self, whileStm):
+              pass 
+          
+        @abstractmethod
+        def visitvisitIfStm(self, ifStm):
+              pass 
+        
+              pass 
+          
+        @abstractmethod
+        def visitIf2Stm(self, if2Stm):
+              pass 
+        
+        @abstractmethod
+        def visitForStm(self, forStm):
+              pass 
+        
+        @abstractmethod
+        def visitFor2Stm(self, for2Stm):
+              pass 
+
+        @abstractmethod
+        def visitreturnStm(self, returnStm):
+              pass 

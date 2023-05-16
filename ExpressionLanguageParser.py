@@ -85,7 +85,7 @@ def p_stm_semi(p):
 def p_stm_assign(p):
     '''stm : assign SEMI
     '''
-    p[0] = sa.assignStm(p[1])
+    p[0] = sa.AssignStm(p[1])
 
 
 def p_stm_while(p):
@@ -121,7 +121,7 @@ def p_stm_for2(p):
 def p_stm_return(p):
     ''' stm : RETURN exp SEMI
     '''
-    p[0] = sa.Returntm( p[2])
+    p[0] = sa.ReturnStm( p[2])
 
 
 def p_stm2(p):
@@ -149,7 +149,7 @@ def p_exp_slash(p):
 def p_exp_percent(p):
     ''' exp : exp PERCENT exp1             
     '''
-    p[0] = (p[1], p[3])
+    p[0] = sa.PercentExp(p[1], p[3])
 
 def p_exp_plus(p):
     '''exp1 : exp1 PLUS exp2
