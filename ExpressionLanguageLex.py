@@ -274,8 +274,7 @@ def t_dedstate_error(t):
 
 
 lexer = lex.lex()
-variavel = cod_2
 
-lexer.input(cod_2)
+lexer.input(cod_1)
 # for tok in lexer:
 #     print(tok.type, tok.value, tok.lineno, tok.lexpos)
